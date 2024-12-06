@@ -1,0 +1,211 @@
+### Software Design Description
+
+#### Overview
+The Java microservice application will be developed using Spring Boot, adhering to microservices architecture principles. The application will be divided into two primary services based on the provided user stories and microservice design: `AuthenticationService` and `CustomerManagementService`.
+
+#### Components
+
+1. **Domain Layer** - Contains the business entities and domain-specific logic.
+2. **Service Layer** - Encapsulates the business logic and coordinates domain entities.
+3. **Controller Layer** - Handles HTTP requests and responses.
+4. **Repository Layer** - Abstraction over the data access layer.
+5. **Security Layer** - Handles authentication and authorization.
+6. **Exception Handling Layer** - Centralized exception management.
+7. **Validation Layer** - Ensures that data complies with business rules.
+8. **Logging and Monitoring Layer** - Tracks the behavior and performance of the application.
+9. **Testing Layer** - Ensures the application functions as intended.
+
+#### Classes and Methods
+
+##### Domain Layer
+- `Customer`
+- `Employee`
+- `Card`
+
+##### Service Layer
+- `AuthenticationService`
+  - `authenticateUser(String username, String password): User`
+- `CustomerManagementService`
+  - `createCustomer(Customer customer): Customer`
+  - `updateCustomer(String customerId, Customer customer): Customer`
+  - `deleteCustomer(String customerId): void`
+  - `getCustomer(String customerId): Customer`
+
+##### Controller Layer
+- `UserController`
+  - `login(@RequestBody UserLoginDTO userLoginDTO): ResponseEntity<AuthToken>`
+  - `getUser(@PathVariable String userId): ResponseEntity<UserDTO>`
+  - `createUser(@RequestBody UserDTO userDTO): ResponseEntity<UserDTO>`
+  - `updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO): ResponseEntity<UserDTO>`
+  - `deleteUser(@PathVariable String userId): ResponseEntity<Void>`
+
+##### Repository Layer
+- `UserRepository`
+  - `findById(String id): Optional<User>`
+  - `save(User user): User`
+  - `delete(User user): void`
+- `CustomerRepository`
+  - `findByCustomerId(String customerId): Optional<Customer>`
+
+##### Security Layer
+- `WebSecurityConfig`
+  - `configure(HttpSecurity http): void`
+
+##### Exception Handling Layer
+- `GlobalExceptionHandler`
+  - `handleUserNotFoundException(UserNotFoundException ex): ResponseEntity<ErrorDetails>`
+  - `handleValidationException(MethodArgumentNotValidException ex): ResponseEntity<ErrorDetails>`
+
+##### Validation Layer
+- `UserValidator`
+  - `validateUserCredentials(UserLoginDTO userLoginDTO): void`
+- `CustomerValidator`
+  - `validateCustomerData(Customer customer): void`
+
+##### Logging and Monitoring Layer
+- `ApplicationLogger`
+  - `logRequest(RequestLogDetails details): void`
+  - `logResponse(ResponseLogDetails details): void`
+
+##### Testing Layer
+- `AuthenticationServiceTest`
+- `CustomerManagementServiceTest`
+- `UserControllerTest`
+
+#### Interaction Between Components
+
+1. The **Controller Layer** receives HTTP requests and delegates processing to the **Service Layer**.
+2. The **Service Layer** uses the **Repository Layer** to interact with the database and the **Validation Layer** to validate inputs.
+3. The **Security Layer** intercepts requests to authenticate and authorize users before reaching the controller.
+4. The **Exception Handling Layer** catches and handles exceptions thrown by any layer and formats them for the client.
+5. The **Logging and Monitoring Layer** records activities and metrics throughout the application flow.
+6. The **Testing Layer** runs unit tests against the service and controller layers to ensure functionality.
+
+#### Sample JSON Request/Response
+
+- POST /users/login (Authentication Service)
+  - Request: `{"username": "john.doe", "password": "password123"}`
+  - Response: `{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}`
+
+- POST /users (Customer Management Service)
+  - Request: `{"name": "Jane Doe", "email": "jane.doe@example.com"}`
+  - Response: `{"customerId": "C001", "name": "Jane Doe", "email": "jane.doe@example.com", "card": {"cardId": "CARD001", "active": true, "fines": 0}}`
+
+#### Mermaid Class Diagram
+
+```mermaid
+classDiagram
+class Customer {
+  String id
+  String name
+  String email
+  Card card
+}
+
+class Employee {
+  String id
+  String name
+  String email
+}
+
+class Card {
+  String cardId
+  boolean active
+  double fines
+}
+
+class User {
+  String username
+  String password
+  boolean isActive
+}
+
+class UserLoginDTO {
+  String username
+  String password
+}
+
+class UserDTO {
+  String userId
+  String name
+  String email
+}
+
+class AuthToken {
+  String token
+}
+
+class UserService {
+  authenticateUser()
+  getUser()
+  createUser()
+  updateUser()
+  deleteUser()
+}
+
+class CustomerService {
+  createCustomer()
+  updateCustomer()
+  deleteCustomer()
+  getCustomer()
+}
+
+class UserRepository {
+  findById()
+  save()
+  delete()
+}
+
+class CustomerRepository {
+  findByCustomerId()
+}
+
+Customer "1" *-- "1" Card : has
+User <|-- Customer : extends
+User <|-- Employee : extends
+UserService o-- UserRepository : uses
+CustomerService o-- CustomerRepository : uses
+```
+
+#### Mermaid Sequence Diagram
+
+```mermaid
+sequenceDiagram
+actor Client
+participant UserController as UC
+participant UserService as US
+participant UserRepository as UR
+participant CustomerService as CS
+participant CustomerRepository as CR
+
+Client->>UC: POST /users/login
+UC->>US: authenticateUser(username, password)
+US->>UR: findByUsername(username)
+UR-->>US: User
+US-->>UC: AuthToken
+UC-->>Client: Response (AuthToken)
+
+Client->>UC: POST /users
+UC->>CS: createCustomer(customerDTO)
+CS->>CR: save(customer)
+CR-->>CS: Customer
+CS-->>UC: CustomerDTO
+UC-->>Client: Response (CustomerDTO)
+```
+
+### Best Practices
+
+- **Domain-Driven Design (DDD)**: Organize code by domain models.
+- **RESTful APIs**: Design endpoints to be stateless and resource-oriented.
+- **Scalability**: Use asynchronous processing and load balancing.
+- **Performance**: Optimize database queries and use caching where appropriate.
+- **Security**: Implement authentication, authorization, and input validation.
+- **Exception Handling**: Use a centralized approach for cleaner error management.
+- **Validation**: Validate data at the boundaries of the system.
+- **Logging**: Use structured and meaningful logging.
+- **Testing**: Write unit tests for all features, aiming for high code coverage.
+- **API Documentation**: Document APIs using tools like Swagger/OpenAPI.
+- **Monitoring and Logging**: Implement application performance monitoring.
+- **CI/CD**: Automate the build, test, and deployment processes.
+
+This design provides a blueprint for developing a robust Java microservice application that adheres to best practices and is ready for production deployment.

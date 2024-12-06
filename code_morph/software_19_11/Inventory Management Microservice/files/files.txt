@@ -1,0 +1,12 @@
+./com/yourcompany/librarymanagementsystem/LibraryManagementSystemApplication.java
+./com/yourcompany/librarymanagementsystem/controller/ItemController.java
+./com/yourcompany/librarymanagementsystem/service/ItemService.java
+./com/yourcompany/librarymanagementsystem/repository/ItemRepository.java
+./com/yourcompany/librarymanagementsystem/model/Item.java
+./com/yourcompany/librarymanagementsystem/model/Book.java
+./com/yourcompany/librarymanagementsystem/model/Video.java
+./com/yourcompany/librarymanagementsystem/model/Location.java
+./com/yourcompany/librarymanagementsystem/model/Branch.java
+./com/yourcompany/librarymanagementsystem/controller/ItemControllerTest.java
+./com/yourcompany/librarymanagementsystem/service/ItemServiceTest.java
+./com/yourcompany/librarymanagementsystem/repository/ItemRepositoryTest.java

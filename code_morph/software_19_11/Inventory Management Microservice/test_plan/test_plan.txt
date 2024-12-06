@@ -1,0 +1,89 @@
+# Software Test Plan: Inventory Management Microservice
+
+## 1. Introduction
+This test plan outlines the strategy, scope, resources, and schedule for the testing activities of the Inventory Management Microservice. The microservice is designed to manage the library's inventory of books and videos, providing functionalities such as adding, updating, and removing items, as well as retrieving item information.
+
+## 2. Test Strategy
+The test strategy for the Inventory Management Microservice includes:
+
+- **Unit Testing**: Each component will be tested in isolation to ensure it performs as expected.
+- **Integration Testing**: Testing the interactions between components and APIs to ensure they work together correctly.
+- **System Testing**: End-to-end testing of the microservice as a whole.
+- **Performance Testing**: Ensuring the microservice performs well under expected load.
+- **Security Testing**: Validating authentication, authorization, and data protection mechanisms.
+- **Usability Testing**: Ensuring the API documentation is clear and the endpoints are easy to use.
+
+## 3. Scope
+The scope of testing includes all the API endpoints described in the software description, main entities, and user stories.
+
+## 4. Test Environment
+The test environment will mimic the production environment as closely as possible, including:
+
+- Java Runtime Environment
+- Spring Boot framework
+- Database instance with test data
+- Mock services for external dependencies
+- Test tools like JUnit, Mockito, Postman, and JMeter
+
+## 5. Resources
+- Testing Team: Software Testing Engineers
+- Tools: JUnit, Mockito, Postman, Swagger, JMeter
+- Documentation: API Docs, User Stories, Design Documents
+
+## 6. Schedule
+The testing timeline will align with the development sprints, with unit and integration tests performed continuously during development, and system, performance, and security testing in the final stages before deployment.
+
+## 7. Test Cases
+
+### 7.1 Unit Test Cases
+- **TC1.1**: Test adding a new book with valid details.
+- **TC1.2**: Test adding a new video with valid details.
+- **TC1.3**: Test updating an item with valid details.
+- **TC1.4**: Test removing an item with a valid ID.
+
+### 7.2 Integration Test Cases
+- **TC2.1**: Test `GET /items` endpoint to retrieve all items.
+- **TC2.2**: Test `GET /items/{itemId}` endpoint with a valid ID.
+- **TC2.3**: Test `POST /items/books` endpoint with complete book details.
+- **TC2.4**: Test `POST /items/videos` endpoint with complete video details.
+- **TC2.5**: Test `PUT /items/{itemId}` endpoint to update an existing item.
+- **TC2.6**: Test `DELETE /items/{itemId}` endpoint with a valid ID.
+
+### 7.3 System Test Cases
+- **TC3.1**: Test the complete workflow of adding, updating, and removing an item.
+- **TC3.2**: Test the system's response to invalid input or missing fields.
+- **TC3.3**: Test the system's behavior when the database is unavailable.
+
+### 7.4 Performance Test Cases
+- **TC4.1**: Test the system's response time under expected load.
+- **TC4.2**: Test the system's throughput for API requests.
+- **TC4.3**: Test the system's behavior under stress conditions.
+
+### 7.5 Security Test Cases
+- **TC5.1**: Test access control for secure endpoints.
+- **TC5.2**: Test authentication mechanisms.
+- **TC5.3**: Test for SQL injection vulnerabilities.
+
+### 7.6 Usability Test Cases
+- **TC6.1**: Test the clarity and accuracy of API documentation.
+- **TC6.2**: Test the API endpoints for ease of use.
+
+## 8. Exit Criteria
+The test cycle can be considered complete when:
+
+- All test cases have been executed.
+- All critical and major defects have been addressed.
+- Performance benchmarks have been met.
+- Security tests pass with no high-risk vulnerabilities.
+
+## 9. Risk Analysis
+Potential risks include:
+
+- Integration with external services may cause unexpected issues.
+- Performance bottlenecks in high-load scenarios.
+- Security vulnerabilities that may not be identified in the initial test cycles.
+
+## 10. Approvals
+The test plan must be reviewed and approved by the QA Lead, Project Manager, and Development Team Lead before testing activities commence.
+
+This test plan ensures a structured approach to testing the Inventory Management Microservice, aiming to deliver a high-quality and reliable software product.

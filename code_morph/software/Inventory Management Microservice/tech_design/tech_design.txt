@@ -1,0 +1,167 @@
+### Detailed Architecture and Design
+
+#### Microservices Overview:
+
+1. **Inventory Management Service**:
+   - **Responsibilities**:
+     - Manages the library's inventory of books and videos.
+     - Handles adding, updating, and removing items.
+   - **Interactions**:
+     - Communicates with the database to persist inventory data.
+     - May publish events to a message broker when items are added, updated, or removed.
+
+#### Classes, Methods, and Attributes:
+
+1. **Inventory Management Service**:
+   - **Domain Model**:
+     - `Book`:
+       - Attributes: id, title, author, isbn, locationId, branchId.
+       - Methods: getters, setters.
+     - `Video`:
+       - Attributes: id, title, director, genre, locationId, branchId.
+       - Methods: getters, setters.
+     - `Location`:
+       - Attributes: id, description.
+       - Methods: getters, setters.
+     - `Branch`:
+       - Attributes: id, name, address.
+       - Methods: getters, setters.
+   - **Service Layer**:
+     - `InventoryService`:
+       - Methods: addItem(Book/Video item), updateItem(String itemId, Book/Video item), removeItem(String itemId), getItem(String itemId).
+   - **Repository Layer**:
+     - `ItemRepository`:
+       - Methods: findById(String itemId), save(Book/Video item), deleteById(String itemId).
+
+#### APIs (REST Endpoints):
+
+1. **Inventory Management Service**:
+   - `GET /items`:
+     - Retrieves a list of items.
+     - Response: List of Book/Video DTOs.
+   - `POST /items/books`:
+     - Adds a new book to the inventory.
+     - Request: Book DTO.
+     - Response: Book DTO with generated ID.
+   - `POST /items/videos`:
+     - Adds a new video to the inventory.
+     - Request: Video DTO.
+     - Response: Video DTO with generated ID.
+   - `PUT /items/{itemId}`:
+     - Updates an item's details.
+     - Request: Book/Video DTO.
+     - Response: Updated Book/Video DTO.
+   - `DELETE /items/{itemId}`:
+     - Removes an item from the inventory.
+     - Response: Acknowledgment of deletion.
+
+#### Database Schema Design:
+
+1. **Inventory Management Service**:
+   - `books` table:
+     - Columns: id, title, author, isbn, location_id, branch_id.
+   - `videos` table:
+     - Columns: id, title, director, genre, location_id, branch_id.
+   - `locations` table:
+     - Columns: id, description.
+   - `branches` table:
+     - Columns: id, name, address.
+   - Relationships:
+     - `books` and `videos` have foreign keys to `locations` and `branches`.
+
+#### Integration with External Systems:
+
+- If required, integrate with an authentication service for securing endpoints.
+- Integrate with a message broker for event-driven architecture.
+
+#### Key Configurations for Spring Boot:
+
+- `application.properties` for configuring database connections, server port, etc.
+- Service discovery using Eureka or Consul.
+- Security configurations using Spring Security.
+
+#### Cross-Cutting Concerns:
+
+- **Authentication**: Use Spring Security to secure the API endpoints.
+- **Logging**: Use SLF4J with Logback for logging.
+- **Monitoring**: Integrate with Spring Actuator and Prometheus for monitoring.
+- **Exception Handling**: Implement global exception handling with `@ControllerAdvice`.
+
+#### Testing Approach:
+
+- **Unit Tests**: Test individual components using JUnit and Mockito.
+- **Integration Tests**: Test the integration of multiple components and real database interactions using Spring Boot Test.
+
+#### CI/CD Pipelines:
+
+- Use Jenkins or GitLab CI for setting up pipelines.
+- Include steps for code checkout, build, unit tests, integration tests, and deployment.
+
+### Mermaid Diagrams
+
+#### Class Diagram for Inventory Management Service (Mermaid):
+
+```mermaid
+classDiagram
+  class Book {
+    -String id
+    -String title
+    -String author
+    -String isbn
+    -String locationId
+    -String branchId
+  }
+  class Video {
+    -String id
+    -String title
+    -String director
+    -String genre
+    -String locationId
+    -String branchId
+  }
+  class Location {
+    -String id
+    -String description
+  }
+  class Branch {
+    -String id
+    -String name
+    -String address
+  }
+  class InventoryService {
+    +addItem(Book/Video item)
+    +updateItem(String itemId, Book/Video item)
+    +removeItem(String itemId)
+    +getItem(String itemId)
+  }
+  class ItemRepository {
+    +findById(String itemId)
+    +save(Book/Video item)
+    +deleteById(String itemId)
+  }
+
+  Book "1" -- "1" Location : has
+  Video "1" -- "1" Location : has
+  Book "1" -- "1" Branch : belongs to
+  Video "1" -- "1" Branch : belongs to
+  InventoryService -- ItemRepository : uses
+```
+
+#### Sequence Diagram for Adding a Book (Mermaid):
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant InventoryController
+  participant InventoryService
+  participant ItemRepository
+
+  Client->>InventoryController: POST /items/books (Book DTO)
+  InventoryController->>InventoryService: addItem(Book item)
+  InventoryService->>ItemRepository: save(Book item)
+  ItemRepository-->>InventoryService: Book item (saved)
+  InventoryService-->>InventoryController: Book item (DTO with ID)
+  InventoryController-->>Client: Response (Book DTO with ID)
+```
+
+This architecture and design outline the main components of the Inventory Management microservice, including the domain model, service layer, repository pattern, API endpoints, database schema, and integration points. The Mermaid diagrams provide a visual representation of the class structure and a sequence diagram for adding a book to the inventory.

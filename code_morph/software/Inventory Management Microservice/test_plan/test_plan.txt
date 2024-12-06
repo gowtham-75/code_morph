@@ -1,0 +1,114 @@
+# Software Test Plan for Library Inventory Management System (LIMS)
+
+## 1. Introduction
+This test plan outlines the testing strategy and overall framework that will drive the testing of the Library Inventory Management System (LIMS) microservice. The goal is to ensure that the system meets its specifications and works as expected.
+
+## 2. Test Objectives
+- Validate that all API endpoints function according to the requirements.
+- Ensure data integrity and consistency within the Inventory Management Service.
+- Verify the system's security, error handling, and logging mechanisms.
+- Confirm that the system performs well under expected load conditions.
+
+## 3. Test Items
+- Item Retrieval (GET /items)
+- Add Book (POST /items/books)
+- Add Video (POST /items/videos)
+- Update Item (PUT /items/{itemId})
+- Remove Item (DELETE /items/{itemId})
+- Item Information Retrieval (GET /items/{itemId})
+
+## 4. Features to Be Tested
+- CRUD operations on books and videos.
+- Filtering and sorting of items.
+- Input validation and handling of incorrect data.
+- Authentication and authorization for protected endpoints.
+- Exception handling and logging.
+- Performance under load.
+
+## 5. Approach
+The testing approach will include a combination of manual and automated tests, including unit tests, integration tests, and end-to-end tests.
+
+### Unit Testing:
+- Use JUnit and Mockito to test individual components in isolation.
+
+### Integration Testing:
+- Test the interaction between components and the database.
+
+### End-to-end Testing:
+- Test the complete flow of the system from the user's perspective.
+
+### Performance Testing:
+- Use tools like JMeter to simulate multiple users and test system performance.
+
+### Security Testing:
+- Conduct vulnerability assessments and penetration testing to ensure that the system is secure.
+
+## 6. Test Environment
+- Local development environment for initial testing.
+- Staging environment that mirrors production for final testing.
+- Use Docker containers to ensure consistency across environments.
+
+## 7. Test Deliverables
+- Test plan document.
+- Test cases and scripts.
+- Test reports, including defect reports and performance reports.
+- Test coverage reports.
+
+## 8. Testing Schedule
+The testing schedule will be aligned with the development sprints. Each sprint will include time allocated for unit and integration testing, with end-to-end and performance testing conducted at the end of the development cycle.
+
+## 9. Risks and Dependencies
+- Delays in development may impact testing schedules.
+- Availability of test environments and necessary tools.
+- External dependencies such as third-party APIs or services.
+
+## 10. Test Cases
+
+### Test Case 1: Item Retrieval (GET /items)
+- **Objective**: Verify that the system can retrieve a list of all items.
+- **Steps**: Send a GET request to /items.
+- **Expected Result**: A list of all items is returned with HTTP status 200.
+
+### Test Case 2: Add Book (POST /items/books)
+- **Objective**: Verify that the system can add a new book with valid data.
+- **Steps**: Send a POST request to /items/books with valid book data.
+- **Expected Result**: The system returns the new book ID and a success message with HTTP status 201.
+
+### Test Case 3: Add Video (POST /items/videos)
+- **Objective**: Verify that the system can add a new video with valid data.
+- **Steps**: Send a POST request to /items/videos with valid video data.
+- **Expected Result**: The system returns the new video ID and a success message with HTTP status 201.
+
+### Test Case 4: Update Item (PUT /items/{itemId})
+- **Objective**: Verify that the system can update an existing item with valid data.
+- **Steps**: Send a PUT request to /items/{itemId} with valid updated data.
+- **Expected Result**: The system returns a success message with HTTP status 200.
+
+### Test Case 5: Remove Item (DELETE /items/{itemId})
+- **Objective**: Verify that the system can remove an existing item.
+- **Steps**: Send a DELETE request to /items/{itemId}.
+- **Expected Result**: The system returns a success message with HTTP status 200.
+
+### Test Case 6: Item Information Retrieval (GET /items/{itemId})
+- **Objective**: Verify that the system can retrieve detailed information about a specific item.
+- **Steps**: Send a GET request to /items/{itemId}.
+- **Expected Result**: The system returns detailed item information with HTTP status 200.
+
+## 11. Entry and Exit Criteria
+
+### Entry Criteria:
+- The development of the feature/module to be tested is complete.
+- Unit tests have been written and pass successfully.
+- Test environment is fully set up and operational.
+
+### Exit Criteria:
+- All test cases have been executed.
+- All critical and major defects have been fixed and retested.
+- Test coverage meets the agreed-upon threshold.
+
+## 12. Approval
+The test plan must be reviewed and approved by the project stakeholders before testing can begin.
+
+---
+
+This test plan provides a structured approach to testing the LIMS microservice, ensuring that all features are thoroughly tested and that the system is reliable, performant, and secure.

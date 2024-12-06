@@ -1,0 +1,90 @@
+```java
+package com.yourcompany.usermanagement.api;
+
+import com.yourcompany.usermanagement.service.UserService;
+import com.yourcompany.usermanagement.service.AuthenticationService;
+import com.yourcompany.usermanagement.model.User;
+import com.yourcompany.usermanagement.exception.CustomException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    private final UserService userService;
+    private final AuthenticationService authenticationService;
+
+    @Autowired
+    public UserController(UserService userService, AuthenticationService authenticationService) {
+        this.userService = userService;
+        this.authenticationService = authenticationService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            String token = authenticationService.authenticate(user.getUsername(), user.getPassword());
+            User authenticatedUser = userService.getUserByUsername(user.getUsername());
+            return ResponseEntity.ok().body(new TokenResponse(token, authenticatedUser.getId(), authenticatedUser.getRole()));
+        } catch (CustomException e) {
+            return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUser(@PathVariable String userId) {
+        try {
+            User user = userService.getUserById(userId);
+            return ResponseEntity.ok().body(user);
+        } catch (CustomException e) {
+            return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody User user) {
+        try {
+            User updatedUser = userService.updateUser(userId, user);
+            return ResponseEntity.ok().body("User updated successfully.");
+        } catch (CustomException e) {
+            return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.ok().body(createdUser);
+        } catch (CustomException e) {
+            return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.ok().body("User deleted successfully.");
+        } catch (CustomException e) {
+            return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+        }
+    }
+
+    private static class TokenResponse {
+        private String token;
+        private String userId;
+        private String role;
+
+        public TokenResponse(String token, String userId, String role) {
+            this.token = token;
+            this.userId = userId;
+            this.role = role;
+        }
+
+        // Getters and setters are omitted for brevity
+    }
+}
+```

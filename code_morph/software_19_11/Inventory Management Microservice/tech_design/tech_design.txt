@@ -1,0 +1,71 @@
+### Software Design Description
+
+#### Overview
+The Java microservice application will be designed to manage an inventory of books and videos for a library system. The application will be built using Spring Boot and will follow Domain-Driven Design (DDD) principles to ensure a clear separation of concerns. The system will consist of several microservices, each corresponding to a specific subdomain and set of responsibilities. The application will expose RESTful APIs to interact with the underlying services and will be designed for scalability, performance, and security.
+
+#### Subdomains and Entities
+The primary subdomain for our application is "Inventory Management," which covers the functionalities related to managing the library's inventory of books and videos. The main entities involved in this subdomain are `Book`, `Video`, `Location`, and `Branch`.
+
+#### Microservices and API Endpoints
+The microservices will be designed around the main entities and user stories. Each microservice will have its own set of API endpoints.
+
+1. **Item Management Service**: Handles CRUD operations for books and videos.
+   - `GET /items`: Retrieves a list of items.
+   - `POST /items/books`: Adds a new book to the inventory.
+   - `POST /items/videos`: Adds a new video to the inventory.
+   - `PUT /items/{itemId}`: Updates an item's details.
+   - `DELETE /items/{itemId}`: Removes an item from the inventory.
+
+2. **Item Information Service**: Provides detailed information about a specific item.
+   - `GET /items/{itemId}`: Retrieves information about a book or video based on item ID.
+
+3. **Media Management Service**: Manages the addition, update, and removal of media items.
+   - Endpoints are covered by the Item Management Service.
+
+#### Classes and Methods
+
+1. `ItemController`: A REST controller class that handles HTTP requests for item management.
+   - Methods: `getAllItems()`, `addItem(Book/Video item)`, `updateItem(String itemId, Book/Video item)`, `deleteItem(String itemId)`, `getItemById(String itemId)`.
+
+2. `ItemService`: A service class that contains the business logic for item management.
+   - Methods: `listItems()`, `createItem(Book/Video item)`, `modifyItem(String itemId, Book/Video item)`, `removeItem(String itemId)`, `fetchItemById(String itemId)`.
+
+3. `ItemRepository`: An interface for data access operations on items.
+   - Methods: `findAll()`, `save(Book/Video item)`, `findById(String itemId)`, `deleteById(String itemId)`.
+
+4. `Item`: A base class for `Book` and `Video` entities.
+   - Attributes: `id`, `title`, `location`, `branch`.
+
+5. `Book`: An entity class that extends `Item`.
+   - Additional Attributes: `author`, `isbn`.
+
+6. `Video`: An entity class that extends `Item`.
+   - Additional Attributes: `director`, `genre`.
+
+7. `Location`: An entity class representing the location of an item within a branch.
+   - Attributes: `shelf`, `aisle`.
+
+8. `Branch`: An entity class representing a library branch.
+   - Attributes: `name`, `address`.
+
+#### Unit Tests
+Each feature or module will have its own set of unit tests to ensure they work as expected. The unit tests will cover all the methods in the service and controller classes.
+
+#### Interactions Between Classes and Functions
+- `ItemController` will handle incoming HTTP requests, validate inputs, and call the appropriate methods on `ItemService`.
+- `ItemService` will contain the business logic and interact with `ItemRepository` to perform data access operations.
+- `ItemRepository` will be used by `ItemService` to interact with the database.
+- `Book` and `Video` will be entities managed by `ItemService` and persisted by `ItemRepository`.
+
+#### Additional Considerations
+- **Decomposition**: Each microservice will be a separate deployable unit with its own database schema.
+- **Data Migration**: A strategy for migrating existing data to the new system will be in place.
+- **Event-Driven Architecture**: The system will use events to ensure loose coupling between microservices.
+- **Security**: Authentication and authorization will be enforced on API endpoints.
+- **Testing**: Comprehensive unit and integration tests will be written.
+- **API Documentation**: Swagger or OpenAPI will be used for API documentation.
+- **Monitoring and Logging**: The system will include monitoring and logging capabilities.
+- **CI/CD**: Continuous Integration and Continuous Deployment pipelines will be set up.
+
+#### Mermaid Diagrams
+Due to limitations of text-based communication, Mermaid class and sequence diagrams cannot be directly included here. However, you can create these diagrams using Mermaid syntax in a compatible editor or visualization tool to represent the class structure and interactions described above.

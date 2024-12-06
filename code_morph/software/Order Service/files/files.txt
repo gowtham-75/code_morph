@@ -1,0 +1,16 @@
+./src/main/java/com/yourcompany/ordermanagement/api/OrderController.java
+./src/main/java/com/yourcompany/ordermanagement/service/OrderService.java
+./src/main/java/com/yourcompany/ordermanagement/repository/OrderRepository.java
+./src/main/java/com/yourcompany/ordermanagement/model/Order.java
+./src/main/java/com/yourcompany/ordermanagement/model/OrderItem.java
+./src/main/java/com/yourcompany/ordermanagement/dto/OrderDTO.java
+./src/main/java/com/yourcompany/ordermanagement/dto/OrderItemDTO.java
+./src/main/java/com/yourcompany/ordermanagement/config/AppConfig.java
+./src/main/java/com/yourcompany/ordermanagement/config/SecurityConfig.java
+./src/main/java/com/yourcompany/ordermanagement/exception/OrderNotFoundException.java
+./src/main/java/com/yourcompany/ordermanagement/exception/OrderServiceException.java
+./src/main/java/com/yourcompany/ordermanagement/utils/ValidationUtils.java
+./src/test/java/com/yourcompany/ordermanagement/api/OrderControllerTest.java
+./src/test/java/com/yourcompany/ordermanagement/service/OrderServiceTest.java
+./src/test/java/com/yourcompany/ordermanagement/repository/OrderRepositoryTest.java
+./src/test/java/com/yourcompany/ordermanagement/integration/OrderManagementIntegrationTest.java
